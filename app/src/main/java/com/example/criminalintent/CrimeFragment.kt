@@ -1,8 +1,10 @@
 package com.example.criminalintent
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+
+private const val TAG = "LOG_TAG_FRAGMENT"
 
 class CrimeFragment : Fragment() {
 
@@ -22,6 +26,8 @@ class CrimeFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         crime = Crime()
+
+        Log.d(TAG, "onCreate")
     }
 
     override fun onCreateView(
@@ -40,6 +46,8 @@ class CrimeFragment : Fragment() {
             text = crime.date.toString()
             isEnabled = false
         }
+
+        Log.d(TAG, "onCreateView")
 
         return view
     }
@@ -67,6 +75,30 @@ class CrimeFragment : Fragment() {
                 crime.isSolved = isChecked
             }
         }
+
+        Log.d(TAG, "onStart")
     }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "onAttach")
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(TAG, "onSaveInstanceState")
+    }
+
+
 
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -62,6 +63,8 @@ class CrimeListFragment : Fragment() {
         private val titleTextView: TextView = itemView.findViewById(R.id.crime_title)
         private val dateTextView: TextView = itemView.findViewById(R.id.crime_date)
 
+        private val callPoliceButton: Button? = itemView.findViewById(R.id.crime_call_police)
+
         init {
             itemView.setOnClickListener(this)
         }
@@ -70,6 +73,10 @@ class CrimeListFragment : Fragment() {
             this.crime = crime
             titleTextView.text = crime.title
             dateTextView.text = crime.date.toString()
+
+            callPoliceButton?.setOnClickListener {
+                Toast.makeText(context, "Call police on the ${crime.title}", Toast.LENGTH_SHORT).show()
+            }
         }
 
         override fun onClick(v: View?) {
@@ -81,7 +88,11 @@ class CrimeListFragment : Fragment() {
         : RecyclerView.Adapter<CrimeHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CrimeHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_crime, parent, false)
+            val view = when (viewType) {
+                1 -> layoutInflater.inflate(R.layout.list_item_crime_police, parent, false)
+                else -> layoutInflater.inflate(R.layout.list_item_crime, parent, false)
+            }
+
             return CrimeHolder(view)
         }
 
@@ -90,6 +101,12 @@ class CrimeListFragment : Fragment() {
         override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
             val crime = crimes[position]
             holder.bind(crime)
+        }
+
+        override fun getItemViewType(position: Int): Int {
+//            return super.getItemViewType(position)
+            val crime = crimes[position]
+            return if (crime.requiresPolice) 1 else 0
         }
     }
 

@@ -8,6 +8,7 @@ import java.util.*
 private const val TAG = "MainActivityLog"
 
 class MainActivity : AppCompatActivity(), CrimeListFragment.Callbacks {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -15,8 +16,7 @@ class MainActivity : AppCompatActivity(), CrimeListFragment.Callbacks {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if (currentFragment == null) {
-//            val fragment = CrimeFragment()
-            val fragment = CrimeListFragment()
+            val fragment = CrimeListFragment.newInstance()
             supportFragmentManager
                 .beginTransaction()
                 .add(R.id.fragment_container, fragment)
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), CrimeListFragment.Callbacks {
     override fun onCrimeSelected(crimeId: UUID) {
         Log.d(TAG, "onCrimeSelected: $crimeId")
 
-        val fragment = CrimeFragment()
+        val fragment = CrimeFragment.newInstance(crimeId)
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)

@@ -3,10 +3,11 @@ package com.example.criminalintent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import java.util.*
 
-private const val TAG = "LOG_TAG_ACTIVITY"
+private const val TAG = "MainActivityLog"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CrimeListFragment.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,6 +24,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         Log.d(TAG, "onCreate")
+    }
+
+    override fun onCrimeSelected(crimeId: UUID) {
+        Log.d(TAG, "onCrimeSelected: $crimeId")
+
+        val fragment = CrimeFragment()
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onStart() {

@@ -3,12 +3,20 @@ package com.example.criminalintent
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
 private const val ARG_DATE = "date"
 
 class DatePickerFragment: DialogFragment() {
+
+    /*
+     * for the CrimeFragment
+     */
+    interface Callbacks {
+        fun onDateSelected(date: Date)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 //        return super.onCreateDialog(savedInstanceState)
@@ -19,9 +27,19 @@ class DatePickerFragment: DialogFragment() {
         val initialMonth = calendar.get(Calendar.MONTH)
         val initialDay = calendar.get(Calendar.DAY_OF_MONTH)
 
+        val dateListener = DatePickerDialog.OnDateSetListener {
+            _: DatePicker, year: Int, month: Int, day: Int ->
+
+            val resultDate: Date = GregorianCalendar(year, month, day).time
+
+            targetFragment?.let { fragment ->
+                (fragment as Callbacks).onDateSelected(resultDate)
+            }
+        }
+
         return DatePickerDialog(
                 requireContext(),
-                null,
+                dateListener,
                 initialYear,
                 initialMonth,
                 initialDay

@@ -19,8 +19,9 @@ import java.util.*
 private const val TAG = "CrimeFragmentLog"
 private const val ARG_CRIME_ID = "crime_id"
 private const val DIALOG_DATE = "DialogDate"
+private const val REQUEST_DATE = 0
 
-class CrimeFragment : Fragment() {
+class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this).get(CrimeDetailViewModel::class.java)
@@ -85,6 +86,7 @@ class CrimeFragment : Fragment() {
 
         dateButton.setOnClickListener {
             DatePickerFragment.newInstance(crime.date).apply {
+                setTargetFragment(this@CrimeFragment, REQUEST_DATE)
 //                show(this@CrimeFragment.requireFragmentManager(), DIALOG_DATE)
                 show(this@CrimeFragment.parentFragmentManager, DIALOG_DATE)
             }
@@ -135,6 +137,11 @@ class CrimeFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         crimeDetailViewModel.saveCrime(crime)
+    }
+
+    override fun onDateSelected(date: Date) {
+        crime.date = date
+        updateUI()
     }
 
     companion object {

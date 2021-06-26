@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ private const val DIALOG_TIME = "DialogTime"
 private const val REQUEST_DATE = 0
 private const val REQUEST_TIME = 1
 
-class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
+class CrimeFragment : Fragment(), DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
 
     private val crimeDetailViewModel: CrimeDetailViewModel by lazy {
         ViewModelProvider(this).get(CrimeDetailViewModel::class.java)
@@ -98,6 +99,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
         timeButton.setOnClickListener {
             TimePickerFragment.newInstance(crime.date).apply {
+                setTargetFragment(this@CrimeFragment, REQUEST_TIME)
                 show(this@CrimeFragment.parentFragmentManager, DIALOG_TIME)
             }
         }
@@ -132,7 +134,15 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
 
     private fun updateUI() {
         titleField.setText(crime.title)
-        dateButton.text = crime.date.toString()
+
+//        dateButton.text = crime.date.toString()
+//        val dateFormat = DateFormat.getLongDateFormat(context)
+//        dateButton.text = dateFormat.format(crime.date)
+        dateButton.text = DateFormat.format("EEEE, dd MMM yyyy", crime.date)
+
+        val timeFormat = DateFormat.getTimeFormat(context)
+        timeButton.text = timeFormat.format(crime.date)
+
         solvedCheckBox.apply {
             isChecked = crime.isSolved
             jumpDrawablesToCurrentState() // skip check animation
@@ -154,6 +164,11 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         updateUI()
     }
 
+    override fun onTimeSelected(date: Date) {
+        crime.date = date
+        updateUI()
+    }
+
     companion object {
         fun newInstance(crimeId: UUID): CrimeFragment {
             val args = Bundle().apply {
@@ -164,5 +179,4 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
             }
         }
     }
-
 }

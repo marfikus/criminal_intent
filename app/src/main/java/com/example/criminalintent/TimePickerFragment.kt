@@ -10,6 +10,13 @@ private const val ARG_TIME = "time"
 
 class TimePickerFragment: DialogFragment() {
 
+    /*
+     * for the CrimeFragment
+     */
+    interface Callbacks {
+        fun onTimeSelected(date: Date)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 //        return super.onCreateDialog(savedInstanceState)
 
@@ -19,9 +26,23 @@ class TimePickerFragment: DialogFragment() {
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
+        val timeListener = TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+            val resultDate: Date = GregorianCalendar(
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH),
+                    hourOfDay,
+                    minute
+            ).time
+
+            targetFragment?.let { fragment ->
+                (fragment as Callbacks).onTimeSelected(resultDate)
+            }
+        }
+
         return TimePickerDialog(
                 requireContext(),
-                null,
+                timeListener,
                 hour,
                 minute,
                 true

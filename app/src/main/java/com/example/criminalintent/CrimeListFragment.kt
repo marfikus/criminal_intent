@@ -1,9 +1,11 @@
 package com.example.criminalintent
 
 import android.content.Context
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -27,6 +29,9 @@ class CrimeListFragment : Fragment() {
     private var callbacks: Callbacks? = null
     private lateinit var crimeRecyclerView: RecyclerView
     private var adapter: CrimeAdapter? = CrimeAdapter(emptyList())
+
+    private lateinit var emptyListTextView: TextView
+    private lateinit var addNewCrimeButton: Button
 
     private val crimeListViewModel: CrimeListViewModel by lazy {
         ViewModelProvider(this).get(CrimeListViewModel::class.java)
@@ -56,11 +61,20 @@ class CrimeListFragment : Fragment() {
         crimeRecyclerView.layoutManager = LinearLayoutManager(context)
         crimeRecyclerView.adapter = adapter
 
+        emptyListTextView = view.findViewById(R.id.emptyListTextView) as TextView
+        addNewCrimeButton = view.findViewById(R.id.addNewCrimeButton) as Button
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addNewCrimeButton.setOnClickListener {
+            val crime = Crime()
+            crimeListViewModel.addCrime(crime)
+            callbacks?.onCrimeSelected(crime.id)
+        }
 
         crimeListViewModel.crimeListLiveData.observe(
             viewLifecycleOwner,
@@ -99,6 +113,14 @@ class CrimeListFragment : Fragment() {
 //        val crimes = crimeListViewModel.crimes
         adapter = CrimeAdapter(crimes)
         crimeRecyclerView.adapter = adapter
+
+        if (crimes.isEmpty()) {
+            emptyListTextView.visibility = View.VISIBLE
+            addNewCrimeButton.visibility = View.VISIBLE
+        } else {
+            emptyListTextView.visibility = View.GONE
+            addNewCrimeButton.visibility = View.GONE
+        }
     }
 
     private inner class CrimeHolder(view: View)

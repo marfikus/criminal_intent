@@ -97,7 +97,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         }
 
         timeButton.setOnClickListener {
-            TimePickerFragment().apply {
+            TimePickerFragment.newInstance(crime.date).apply {
                 show(this@CrimeFragment.parentFragmentManager, DIALOG_TIME)
             }
         }

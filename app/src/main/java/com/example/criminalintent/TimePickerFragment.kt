@@ -6,11 +6,16 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import java.util.*
 
+private const val ARG_TIME = "time"
+
 class TimePickerFragment: DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 //        return super.onCreateDialog(savedInstanceState)
+
+        val date = arguments?.getSerializable(ARG_TIME) as Date
         val calendar = Calendar.getInstance()
+        calendar.time = date
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
@@ -23,4 +28,15 @@ class TimePickerFragment: DialogFragment() {
         )
     }
 
+
+    companion object {
+        fun newInstance(date: Date): TimePickerFragment {
+            val args = Bundle().apply {
+                putSerializable(ARG_TIME, date)
+            }
+            return TimePickerFragment().apply {
+                arguments = args
+            }
+        }
+    }
 }

@@ -8,4 +8,6 @@
     <string name="crime_date">Crime Date</string>
     <string name="image_handcuffs">image handcuffs</string>
     <string name="new_crime">New Crime</string>
+    <string name="list_of_crimes_is_empty">List of crimes is empty!</string>
+    <string name="add_new_crime">Add new crime</string>
 </resources>

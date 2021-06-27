@@ -1,6 +1,7 @@
 package com.example.criminalintent
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -33,6 +34,7 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
     private lateinit var titleField: EditText
     private lateinit var dateButton: Button
     private lateinit var solvedCheckBox: CheckBox
+    private lateinit var reportButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +58,9 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
         titleField = view.findViewById(R.id.crime_title) as EditText
         dateButton = view.findViewById(R.id.crime_date) as Button
         solvedCheckBox = view.findViewById(R.id.crime_solved) as CheckBox
+        reportButton = view.findViewById(R.id.crime_report) as Button
 
         Log.d(TAG, "onCreateView")
-
         return view
     }
 
@@ -91,6 +93,20 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
                 setTargetFragment(this@CrimeFragment, REQUEST_DATE)
 //                show(this@CrimeFragment.requireFragmentManager(), DIALOG_DATE)
                 show(this@CrimeFragment.parentFragmentManager, DIALOG_DATE)
+            }
+        }
+
+        reportButton.setOnClickListener {
+            Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, getCrimeReport())
+                putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.crime_report_subject, getString(R.string.app_name)))
+            }.also { intent ->
+//                startActivity(intent)
+                val chooserIntent =
+                        Intent.createChooser(intent, getString(R.string.send_report))
+                startActivity(chooserIntent)
             }
         }
 

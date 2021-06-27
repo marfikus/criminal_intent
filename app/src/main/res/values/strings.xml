@@ -8,4 +8,6 @@
     <string name="crime_date">Crime Date</string>
     <string name="image_handcuffs">image handcuffs</string>
     <string name="new_crime">New Crime</string>
+    <string name="crime_suspect_text">Choose Suspect</string>
+    <string name="crime_report_text">Send Crime Report</string>
 </resources>

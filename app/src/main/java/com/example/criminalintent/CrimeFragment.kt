@@ -3,6 +3,8 @@ package com.example.criminalintent
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -123,6 +125,15 @@ class CrimeFragment : Fragment(), DatePickerFragment.Callbacks {
             setOnClickListener {
                 startActivityForResult(pickContactIntent, REQUEST_CONTACT)
             }
+
+            // check available activity on device
+//            pickContactIntent.addCategory(Intent.CATEGORY_HOME) // for check this code
+            val packageManager: PackageManager = requireActivity().packageManager
+            val resolvedActivity: ResolveInfo? =
+                    packageManager.resolveActivity(pickContactIntent,
+                            PackageManager.MATCH_DEFAULT_ONLY)
+
+            if (resolvedActivity == null) isEnabled = false
         }
 
         Log.d(TAG, "onStart")

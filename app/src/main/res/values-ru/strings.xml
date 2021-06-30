@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ПреступныйУмысел</string>
+    <string name="crime_title_hint">Введите название преступления.</string>
+    <string name="crime_title_label">Название</string>
+    <string name="crime_details_label">Детали</string>
+    <string name="crime_solved_label">Раскрыто</string>
+    <string name="crime_title">Название Преступления</string>
+    <string name="crime_date">Дата Преступления</string>
+    <string name="image_handcuffs">изображение наручников</string>
+    <string name="new_crime">Новое Преступление</string>
+    <string name="crime_suspect_text">Выбрать Подозреваемого</string>
+    <string name="crime_report_text">Отправить Отчёт о Преступлении</string>
+    <string name="crime_report">%1$s!
+        Преступление было раскрыто %2$s. %3$s, и %4$s
+    </string>
+    <string name="crime_report_solved">Преступление раскрыто</string>
+    <string name="crime_report_unsolved">Преступление ещё не раскрыто</string>
+    <string name="crime_report_no_suspect">подозреваемого нет.</string>
+    <string name="crime_report_suspect">подозреваемый %s.</string>
+    <string name="crime_report_subject">%s Отчёт о Преступлении</string>
+    <string name="send_report">Отправить отчёт через</string>
+</resources>
